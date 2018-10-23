@@ -3,6 +3,7 @@
 #include "PokerCards.h"
 #include<iostream>
 #include<stdio.h>
+#include<string>
 using namespace std;
 //struct DoubleLinkList { Node* head; };
 
@@ -65,49 +66,62 @@ void DoubleLinkList::AddLast(DoubleLinkList * list, Cards data){
 
 void DoubleLinkList::PrintList(DoubleLinkList* list){
 	Node* n = list->head;
+	int count = 1;
+
+	cout << endl;
 	while (n != NULL)
 	{
 		if (n->data.suit == 'C') {
 			if (n->data.value == 10) {
-				cout << "10 of " << "Clubs  ";
+				cout <<"("<< count<<") "<<"10 of " << "Clubs  ";
 			}
 			else
-				cout << n->data.showValue << " of " << "Clubs  ";
+				cout << "(" << count << ") " << n->data.showValue << " of " << "Clubs  ";
 		}
 
 		if (n->data.suit == 'D') {
 			if (n->data.value == 10) {
-				cout << "10 of " << "Diamonds  ";
+				cout << "(" << count << ") " << "10 of " << "Diamonds  ";
 			}
 			else
-			    cout << n->data.showValue << " of " << "Diamonds  ";
+			    cout << "(" << count << ") " << n->data.showValue << " of " << "Diamonds  ";
 		}
 
 		if (n->data.suit == 'H') {
 			if (n->data.value == 10) {
-				cout << "10 of " << "Hearts  ";
+				cout << "(" << count << ") " << "10 of " << "Hearts  ";
 			}
 			else
-			    cout << n->data.showValue << " of " << "Hearts  ";
+			    cout << "(" << count << ") " << n->data.showValue << " of " << "Hearts  ";
 		}
 
 		if (n->data.suit == 'S') {
 			if (n->data.value == 10) {
-				cout << "10 of " << "Spades  ";
+				cout << "(" << count << ") " << "10 of " << "Spades  ";
 			}
 			else
-			    cout << n->data.showValue << " of " << "Spades  ";
+			    cout << "(" << count << ") " << n->data.showValue << " of " << "Spades  ";
 		}
 		n = n->next;
+		count++;
 	}
 	cout << endl;
 }
 
 
 void DoubleLinkList::ShowHand(DoubleLinkList* list) {
+	SortList(list);
 	Node* n = list->head;
+	int count = 1;
+	cout << "Your hand contains:" << endl;
 	while (n != NULL)
 	{
+		if (count == 1) cout << "A: ";
+		if (count == 2) cout << "B: ";
+		if (count == 3) cout << "C: ";
+		if (count == 4) cout << "D: ";
+		if (count == 5) cout << "E: ";
+
 		if (n->data.suit == 'C') {
 			if (n->data.value == 10) {
 				cout << "10 of " << "Clubs" << endl;
@@ -140,45 +154,52 @@ void DoubleLinkList::ShowHand(DoubleLinkList* list) {
 				cout << n->data.showValue << " of " << "Spades" << endl;
 		}
 		n = n->next;
+		count++;
 	}
 	cout << endl;
 }
 
 
-
-int DoubleLinkList::GetCardValue(DoubleLinkList* list, int index){
+Cards DoubleLinkList::GetCard(DoubleLinkList* list, int index) {
 	Node* n = list->head;
 	while (index > 0)
 	{
 		n = n->next;
 		--index;
 	}
-	return n->data.value;
+	return n->data;
 }
 
 
-char DoubleLinkList::GetCardSuit(DoubleLinkList * list, int index){
+void DoubleLinkList::ModifyNode(DoubleLinkList* list, int index,Cards node){
 	Node* n = list->head;
 	while (index > 0)
 	{
 		n = n->next;
 		--index;
 	}
-	return n->data.suit;
+	n->data = node;
 }
 
 
-void DoubleLinkList::DrawFromList(DoubleLinkList* list1, DoubleLinkList* list2){
-	if (list1->head == NULL){
+void DoubleLinkList::DrawFromList(DoubleLinkList* list1, DoubleLinkList* list2, int count) {
+	if (list1->head == NULL) {
 		cout << "Error!" << endl;
 		return;
 	}
-
-	Node* n = list1->head;
-	list1->head = n->next;
-	n->next->prev = NULL;
-	AddFirst(list2, n->data);
-	delete n;
+	while (count>0) {
+		Node* n = list1->head;
+		if (n->next != NULL) {
+			list1->head = n->next;
+			n->next->prev = NULL;
+		}
+		else {
+			list1->head = NULL;
+		}
+		AddFirst(list2, n->data);
+		delete n; 
+		count--;
+	}
 }
 
 
@@ -198,9 +219,9 @@ void DoubleLinkList::CopyList(DoubleLinkList* list1, DoubleLinkList* list2) {
 }
 
 
-
-void DoubleLinkList::DiscardFromList(DoubleLinkList* list, int index)
+void DoubleLinkList::DeleteFromList(DoubleLinkList* list, int index)
 {
+	int count = index;
 	if (index == 0)
 	{
 		cout << "Error!" << endl;
@@ -208,20 +229,34 @@ void DoubleLinkList::DiscardFromList(DoubleLinkList* list, int index)
 	}
 
 	Node* p = list->head;
-	while (index - 1 > 0)
+	while (count - 1 > 0)
 	{
 		p = p->next;
-		--index;
+		--count;
 	}
 
-	Node* n = p->next;
-	p->next = n->next;
-	n->next->prev = p;
-	delete n;
+	if (p->prev==NULL&& p->next != NULL) {
+		list->head = p->next;
+		p->next->prev = NULL;
+		delete p;
+	}
+	else if (p->prev == NULL && p->next == NULL) {
+		 list->head = NULL;
+		 delete p;
+	 }
+	else if (p->next!=NULL) {
+		p->prev->next = p->next;
+		p->next->prev = p->prev;
+		delete p;
+	}
+	else if (p->next==NULL) {
+		p->prev->next = NULL;
+		delete p;
+	}
 }
 
 
-void DoubleLinkList::SortList(DoubleLinkList* list)   //Ã°ÅÝÅÅÐò
+void DoubleLinkList::SortList(DoubleLinkList* list)
 {
 	Node* p = new Node;
 	Node* q = new Node;
@@ -243,6 +278,26 @@ void DoubleLinkList::SortList(DoubleLinkList* list)   //Ã°ÅÝÅÅÐò
 }
 
 
+void  DoubleLinkList::EmptyList(DoubleLinkList* list) {
+	if (list->head == NULL) {
+		cout << "Error!" << endl;
+		return;
+	}
+
+	while (list->head!= NULL) {
+		Node* n = list->head;
+		if (n->next != NULL) {
+			list->head = n->next;
+			n->next->prev = NULL;
+		}
+		else {
+			list->head = NULL;
+		}
+		delete n;
+	}
+}
+
+
 int DoubleLinkList::GetLength(DoubleLinkList* list)
 {
 	int count = 0;
@@ -256,118 +311,103 @@ int DoubleLinkList::GetLength(DoubleLinkList* list)
 }
 
 
- //bool DoubleLinkList::isEmpty()
- //{
-	// if (head->next = NULL) {
-	//	 return true;
-	// }
-	// else {
-	//	 return false;
-	// }
- //}
+int DoubleLinkList::JudgeCards(DoubleLinkList* hand) {
+	int handCards[5];
+	char cardsSuit[5];
+	int a = 0;
+	int countStraight = 0;
+
+	for (int i = 0; i < 5; i++) {
+		handCards[i] = GetCard(hand, i ).value;
+		cardsSuit[i] = GetCard(hand, i ).suit;
+	}
+
+	if ((handCards[0] == handCards[1] && handCards[1] == handCards[2]&& handCards[2] == handCards[3]) || (handCards[1] == handCards[2] && handCards[2] == handCards[3] && handCards[3] == handCards[4])) {
+		return 25;//Four of a kind
+	}
+
+	else if (handCards[a] == handCards[a + 1] &&handCards[a+1]== handCards[a + 2]) {
+		switch (a)
+		{
+		case 0:
+			if (handCards[3] == handCards[4]) {
+				return 9;//Fullhouse
+				break;
+			}
+			else {
+				return 3;//Three of a kind
+				break;
+			}
+
+		case 1:
+			if (handCards[0] == handCards[4]) {
+				return 9;//Fullhouse
+				break;
+			}
+			else {
+				return 3;//Three of a kind
+				break;
+			}
+
+		case 2:
+			if (handCards[0] == handCards[1]) {
+				return 9;//Fullhouse
+				break;
+			}
+			else {
+				return 3;//Three of a kind
+				break;
+			}
+		}
+	}
+
+	else if ((handCards[0] == handCards[1] && handCards[2] == handCards[3]) || (handCards[1] == handCards[2] && handCards[3] == handCards[4])) {
+		return 2;//Two pair
+	}
+
+	else {
+		for (int i = 0; i < 4; i++) {
+			if (handCards[i] == handCards[i + 1] && handCards[i] > 10) {
+				return 1;//One pair larger than J
+			}
+		}
+	}
+
+	if (cardsSuit[0] == cardsSuit[1] &&cardsSuit[1]== cardsSuit[2]&&cardsSuit[2] == cardsSuit[3]&&cardsSuit[3] == cardsSuit[4]) {
+		for (int i = 0; i < 4; i++) {
+			if (handCards[i + 1] - handCards[i] == 1) {
+				countStraight++;
+			}
+		}
+		if (countStraight == 4) {
+			if (handCards[0] == 10) {
+				return 800;
+			}//Royal flush
+			else {
+				return 50;
+			}//Straight flush
+		}
+
+		else {
+			return 6;
+		}//Flush
+
+	}
+	return 0;
+}
 
 
- //int DoubleLinkList::Getlength(){
-	// int n = 0;
-	// Node* ptemp = head->next;
-	// while (ptemp != NULL) {
-	//	 n++;
-	//	 ptemp = ptemp->next;
-	// }
-	// return n;
- //}
+void DoubleLinkList::SwapBetweenLists(DoubleLinkList* list1, DoubleLinkList* list2, int index1,int index2) {
+	if (list1->head == NULL||list2->head == NULL) {
+		cout << "Error!" << endl;
+		return;
+	}
+	Cards temp = GetCard(list1, index1-1);
+	ModifyNode(list1, index1- 1, GetCard(list2,index2-1));
+	ModifyNode(list2, index2 - 1, temp);
+}
 
 
- //
- //void DoubleLinkList::InsertNodeAfter(int position,Cards card){
-	// if (position<0||position>Getlength()+1) {
-	//	 cout << "Invalid position!" << endl;
-	//	 exit(EXIT_FAILURE);
-	// }
-	// else {
-	//	 Node*pnew;
-	//	 Node* ptemp;
-	//	 pnew = new Node;
-	//	pnew->data = card;
-	//	 ptemp = head;
-
-	//	 while (position-- > 1) {
-	//		 ptemp = ptemp->next;
-	//	 }
-
-	//	 if (ptemp->next != NULL) {
-	//		 ptemp->next->prev= pnew;
-	//	 }
-	//	 pnew->next = ptemp->next;
-	//	 pnew->prev = ptemp;
-	//	 ptemp->next = pnew;
-	// }
- //}
-
-
- //void DoubleLinkList::InsertNodeBefore(int position){
-	// if (position<0 || position>Getlength() + 1) {
-	//	 cout << "Invalid position!" << endl;
-	//	 exit(EXIT_FAILURE);
-	// }
-	// else {
-	//	 Node*pnew;
-	//	 Node* ptemp;
-	//	 pnew = new Node;
-	//	 //pnew->data = d;
-	//	 ptemp = head;
-
-	//	 while (position-- > 1) {
-	//		 ptemp = ptemp->next;
-	//	 }
-
-	//	 ptemp->prev->next = pnew;
-	//	 pnew->prev= ptemp->prev;
-	//	 pnew->next = ptemp;
-	//	 ptemp->prev = pnew;
-	// }
- //}
-
-
- //void DoubleLinkList::DeleteNode(int position) {
-	// if (position<0 || position>Getlength()) {
-	//	 cout << "Invalid position!" << endl;
-	//	 exit(EXIT_FAILURE);
-	// }
-	// else {
-	//	 Node* pdelete;
-	//	 Node* ptemp;
-	//	 ptemp = head;
-
-	//	 while (position-- > 1) {
-	//		 ptemp = ptemp->next;
-	//	 }
-	//	 pdelete = ptemp->next;
-	//	 if (pdelete->next != NULL) {
-	//		 pdelete->next->prev = ptemp;
-	//	 }
-	//	 ptemp->next = pdelete->next;
-	//	 delete pdelete;
-	//	 pdelete = NULL;
-	// }
- //
- //}
-
-
- //void DoubleLinkList::DeleteLinkList(){
-	// Node* pdelete;
-	// Node* ptemp;
-	// pdelete = head->next;
-	// while (pdelete!=NULL) {
-	//	 ptemp = pdelete->next;
-	//	 head->next = ptemp;
-	//	 if (ptemp!=NULL) {
-	//		 ptemp->prev = head;
-	//	 }
-	//	 delete pdelete;
-	//	 pdelete = ptemp;
-	// }
- //}
 
  
  

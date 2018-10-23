@@ -6,7 +6,6 @@
 
 Cards cards[4][13];
 
-
 PokerCards::PokerCards()
 {
 }
@@ -83,86 +82,6 @@ void PokerCards::Shuffle(Cards array[], int length) {
 }
 
 
-int JudgeCards(DoubleLinkList* hand) {
-	DoubleLinkList list;
-	int handCards[5];
-	char cardsSuit[5];
-	int a=0;
-	int countStraight=0;
-
-	for (int i = 0; i < 5; i++) {
-		handCards[i] = list.GetCardValue(hand, i + 1);
-		cardsSuit[i] = list.GetCardSuit(hand, i + 1);
-	}
-
-	if ((handCards[0] == handCards[1] == handCards[2] == handCards[3]) || (handCards[1] == handCards[2] == handCards[3] == handCards[4])) {
-		return 25;//Four of a kind
-	}
-
-	if (handCards[a] == handCards[a + 1] == handCards[a + 2]) {
-		switch (a)
-		{
-		case 0:
-			if (handCards[3] == handCards[4]) {
-				return 9;//Fullhouse
-				break;
-			}
-			else {
-				return 3;//Three of a kind
-				break;
-			}
-
-		case 1:
-			if (handCards[0] == handCards[4]) {
-				return 9;//Fullhouse
-				break;
-			}
-			else {
-				return 3;//Three of a kind
-				break;
-			}
-
-		case 2:
-			if (handCards[0] == handCards[1]) {
-				return 9;//Fullhouse
-				break;
-			}
-			else {
-				return 3;//Three of a kind
-				break;
-			}
-		}
-	}
-
-	else if ((handCards[0] == handCards[1] && handCards[1] == handCards[2]) || (handCards[1] == handCards[2] && handCards[3] == handCards[4])) {
-		return 2;//Two pair
-	}
-
-	else {
-		for (int i = 0; i < 4; i++) {
-			if (handCards[i] == handCards[i + 1] && handCards[i] > 10) {
-				return 1;//One pair larger than J
-			}
-		}
-	}
-
-	if (cardsSuit[0]== cardsSuit[1]== cardsSuit[2]== cardsSuit[3]== cardsSuit[4]) {
-		for (int i = 0; i < 4; i++) {
-			if (handCards[i + 1] - handCards[i] == 1) {
-				countStraight++;
-			}
-		}
-		if (countStraight == 4) {
-			if (handCards[0] == 10)
-				return 800;//Royal flush
-			else
-				return 50;//Straight flush
-		}
-		else
-			return 6;//Flush
-	}
-
-	return 0;
-}
+ 
 
 
