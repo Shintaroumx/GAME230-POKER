@@ -5,6 +5,7 @@ struct Cards
 	int value;
 	char showValue;
 	char suit;
+	bool isKept;
 };
 
 class PokerCards

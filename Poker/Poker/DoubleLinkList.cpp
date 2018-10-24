@@ -42,28 +42,6 @@ void DoubleLinkList::AddFirst(DoubleLinkList * list, Cards data) {
 }
 
 
-void DoubleLinkList::AddLast(DoubleLinkList * list, Cards data){
-	if (list->head == NULL){
-	   AddFirst(list, data);
-	   return;
-	}
-
-    Node* tail = list->head;
-	Node* n = new Node;
-
-	while (tail->next != NULL)
-		tail = tail->next;
-
-	if (tail->next != NULL) 
-		tail->next->prev= n;
-		 	 
-	n->data = data;
-	n->next = NULL;
-	n->prev = tail;
-	tail->next = n;
-}
-
-
 void DoubleLinkList::PrintList(DoubleLinkList* list){
 	Node* n = list->head;
 	int count = 1;
@@ -109,6 +87,14 @@ void DoubleLinkList::PrintList(DoubleLinkList* list){
 }
 
 
+string isKept(Node* n) {
+	if (n->data.isKept)
+		return " (Kept)";
+	else
+		return"";
+}
+
+
 void DoubleLinkList::ShowHand(DoubleLinkList* list) {
 	SortList(list);
 	Node* n = list->head;
@@ -124,34 +110,34 @@ void DoubleLinkList::ShowHand(DoubleLinkList* list) {
 
 		if (n->data.suit == 'C') {
 			if (n->data.value == 10) {
-				cout << "10 of " << "Clubs" << endl;
+				cout << "10 of " << "Clubs" << isKept(n) << endl;
 			}
 			else
-				cout << n->data.showValue << " of " << "Clubs" << endl;
+				cout << n->data.showValue << " of " << "Clubs" << isKept (n)<<endl;
 		}
 
 		if (n->data.suit == 'D') {
 			if (n->data.value == 10) {
-				cout << "10 of " << "Diamonds" << endl;
+				cout << "10 of " << "Diamonds" << isKept(n) << endl;
 			}
 			else
-				cout << n->data.showValue << " of " << "Diamonds" << endl;
+				cout << n->data.showValue << " of " << "Diamonds" << isKept(n) << endl;
 		}
 
 		if (n->data.suit == 'H') {
 			if (n->data.value == 10) {
-				cout << "10 of " << "Hearts" << endl;
+				cout << "10 of " << "Hearts" << isKept(n) << endl;
 			}
 			else
-				cout << n->data.showValue << " of " << "Hearts" << endl;
+				cout << n->data.showValue << " of " << "Hearts" << isKept(n) << endl;
 		}
 
 		if (n->data.suit == 'S') {
 			if (n->data.value == 10) {
-				cout << "10 of " << "Spades" << endl;
+				cout << "10 of " << "Spades" << isKept(n) << endl;
 			}
 			else
-				cout << n->data.showValue << " of " << "Spades" << endl;
+				cout << n->data.showValue << " of " << "Spades" << isKept(n) << endl;
 		}
 		n = n->next;
 		count++;
@@ -264,24 +250,36 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,
 		list->head = p->next;
 		p->next->prev = NULL;
 		AddFirst(list2, p->data);
+		p->data.isKept = false;
 		delete p;
 	}
 	else if (p->prev == NULL && p->next == NULL) {
 		 list->head = NULL;
 		 AddFirst(list2, p->data);
+		 p->data.isKept = false;
 		 delete p;
 	 }
 	else if (p->next!=NULL) {
 		p->prev->next = p->next;
 		p->next->prev = p->prev;
 		AddFirst(list2, p->data);
+		p->data.isKept = false;
 		delete p;
 	}
 	else if (p->next==NULL) {
 		p->prev->next = NULL;
 		AddFirst(list2, p->data);
+		p->data.isKept = false;
 		delete p;
 	}
+
+
+	Node* n = list->head;
+	while (n->next != NULL) {
+		n->data.isKept = true;
+		n = n->next;
+	}
+	if (n->next == NULL)n->data.isKept = true;
 }
 
 

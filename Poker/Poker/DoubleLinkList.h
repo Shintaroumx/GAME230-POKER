@@ -16,7 +16,6 @@ public:
 	
 	DoubleLinkList* CreateLinkList();
 	void AddFirst(DoubleLinkList* list, Cards data);
-	void AddLast(DoubleLinkList* list, Cards data);
 	void PrintList(DoubleLinkList* list);
 	void ShowHand(DoubleLinkList * list);
 	Cards GetCard(DoubleLinkList * list, int index);
