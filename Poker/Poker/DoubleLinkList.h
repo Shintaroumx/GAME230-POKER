@@ -20,6 +20,7 @@ public:
 	void PrintList(DoubleLinkList* list);
 	void ShowHand(DoubleLinkList * list);
 	Cards GetCard(DoubleLinkList * list, int index);
+	int GetNodeIndex(DoubleLinkList * list, Cards node);
 	void ModifyNode(DoubleLinkList * list, int index,Cards node);
 	void DrawFromList(DoubleLinkList* list1, DoubleLinkList* list2,int count);
 	void CopyList(DoubleLinkList * list1, DoubleLinkList * list2);

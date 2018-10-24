@@ -171,11 +171,31 @@ Cards DoubleLinkList::GetCard(DoubleLinkList* list, int index) {
 }
 
 
+int DoubleLinkList::GetNodeIndex(DoubleLinkList* list, Cards node) {
+	int index = 0;
+	if (list->head == NULL) {
+		cout << "Error Code:GetNodeIndex" << endl;
+		return 0;
+	}
+	Node* n = list->head;
+	while (n ->next!= NULL) {
+		if (n->data.value == node.value && n->data.suit == node.suit)return index;
+		n = n->next;
+		index++;
+	}
+}
+
+
 void DoubleLinkList::ModifyNode(DoubleLinkList* list, int index,Cards node){
 	Node* n = list->head;
 	while (index > 0)
 	{
-		n = n->next;
+		if (n->next != NULL) {
+			n = n->next;
+		}
+		else {
+			n->next = NULL;
+		}
 		--index;
 	}
 	n->data = node;
@@ -184,7 +204,7 @@ void DoubleLinkList::ModifyNode(DoubleLinkList* list, int index,Cards node){
 
 void DoubleLinkList::DrawFromList(DoubleLinkList* list1, DoubleLinkList* list2, int count) {
 	if (list1->head == NULL) {
-		cout << "Error!" << endl;
+		cout << "Error! Code:DrawFromList" << endl;
 		return;
 	}
 	while (count>0) {
@@ -205,7 +225,7 @@ void DoubleLinkList::DrawFromList(DoubleLinkList* list1, DoubleLinkList* list2, 
 
 void DoubleLinkList::CopyList(DoubleLinkList* list1, DoubleLinkList* list2) {
 	if (list1->head == NULL) {
-		cout << "Error!" << endl;
+		cout << "Error! Code:CopyList" << endl;
 		return;
 	}
 
@@ -224,14 +244,19 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, int index)
 	int count = index;
 	if (index == 0)
 	{
-		cout << "Error!" << endl;
+		cout << "Error! Code:DeleteFromList" << endl;
 		return;
 	}
 
 	Node* p = list->head;
 	while (count - 1 > 0)
 	{
-		p = p->next;
+		if (p->next != NULL) {
+			p = p->next;
+		}
+		else {
+			p->next = NULL;
+		}
 		--count;
 	}
 
@@ -260,17 +285,23 @@ void DoubleLinkList::SortList(DoubleLinkList* list)
 {
 	Node* p = new Node;
 	Node* q = new Node;
-	for (p = list->head; p->next != NULL; p = p->next)
-	{
-		for (q = p->next; q != NULL; q = q->next)
+	if (list->head == NULL) {
+		cout << "Error! Code:SortList" << endl;
+		return;
+	}
+	else {
+		for (p = list->head; p->next != NULL; p = p->next)
 		{
-			if (q->data.value < p->data.value)
+			for (q = p->next; q != NULL; q = q->next)
 			{
-				swap(q->data, p->data);
-			}
-			if (q->data.value == p->data.value) {
-				if (q->data.suit < p->data.suit) {
+				if (q->data.value < p->data.value)
+				{
 					swap(q->data, p->data);
+				}
+				if (q->data.value == p->data.value) {
+					if (q->data.suit < p->data.suit) {
+						swap(q->data, p->data);
+					}
 				}
 			}
 		}
@@ -280,7 +311,7 @@ void DoubleLinkList::SortList(DoubleLinkList* list)
 
 void  DoubleLinkList::EmptyList(DoubleLinkList* list) {
 	if (list->head == NULL) {
-		cout << "Error!" << endl;
+		cout << "Error! Code:EmptyList" << endl;
 		return;
 	}
 
@@ -410,7 +441,7 @@ int DoubleLinkList::JudgeCards(DoubleLinkList* hand) {
 
 void DoubleLinkList::SwapBetweenLists(DoubleLinkList* list1, DoubleLinkList* list2, int index1,int index2) {
 	if (list1->head == NULL||list2->head == NULL) {
-		cout << "Error!" << endl;
+		cout << "Error! Code:SwapBetweenLists" << endl;
 		return;
 	}
 	Cards temp = GetCard(list1, index1-1);
