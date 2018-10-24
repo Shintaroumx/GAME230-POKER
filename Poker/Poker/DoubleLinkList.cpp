@@ -275,11 +275,11 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,
 
 
 	Node* n = list->head;
+	if (n->next == NULL)n->data.isKept = true;
 	while (n->next != NULL) {
 		n->data.isKept = true;
 		n = n->next;
 	}
-	if (n->next == NULL)n->data.isKept = true;
 }
 
 
