@@ -73,34 +73,34 @@ void DoubleLinkList::PrintList(DoubleLinkList* list){
 	{
 		if (n->data.suit == 'C') {
 			if (n->data.value == 10) {
-				cout <<"("<< count<<") "<<"10 of " << "Clubs  ";
+				cout <<"["<< count<<"] "<<"10 of " << "Clubs  ";
 			}
 			else
-				cout << "(" << count << ") " << n->data.showValue << " of " << "Clubs  ";
+				cout << "[" << count << "] " << n->data.showValue << " of " << "Clubs  ";
 		}
 
 		if (n->data.suit == 'D') {
 			if (n->data.value == 10) {
-				cout << "(" << count << ") " << "10 of " << "Diamonds  ";
+				cout << "[" << count << "] " << "10 of " << "Diamonds  ";
 			}
 			else
-			    cout << "(" << count << ") " << n->data.showValue << " of " << "Diamonds  ";
+			    cout << "[" << count <<"] " << n->data.showValue << " of " << "Diamonds  ";
 		}
 
 		if (n->data.suit == 'H') {
 			if (n->data.value == 10) {
-				cout << "(" << count << ") " << "10 of " << "Hearts  ";
+				cout << "[" << count << "] " << "10 of " << "Hearts  ";
 			}
 			else
-			    cout << "(" << count << ") " << n->data.showValue << " of " << "Hearts  ";
+			    cout << "[" << count << "] " << n->data.showValue << " of " << "Hearts  ";
 		}
 
 		if (n->data.suit == 'S') {
 			if (n->data.value == 10) {
-				cout << "(" << count << ") " << "10 of " << "Spades  ";
+				cout << "[" << count <<"] " << "10 of " << "Spades  ";
 			}
 			else
-			    cout << "(" << count << ") " << n->data.showValue << " of " << "Spades  ";
+			    cout << "[" << count << "] " << n->data.showValue << " of " << "Spades  ";
 		}
 		n = n->next;
 		count++;
