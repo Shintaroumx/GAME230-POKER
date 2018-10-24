@@ -24,7 +24,7 @@ public:
 	void ModifyNode(DoubleLinkList * list, int index,Cards node);
 	void DrawFromList(DoubleLinkList* list1, DoubleLinkList* list2,int count);
 	void CopyList(DoubleLinkList * list1, DoubleLinkList * list2);
-	void DeleteFromList(DoubleLinkList* list, int index);
+	void DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2, int index);
 	void SortList(DoubleLinkList* list);
 	void EmptyList(DoubleLinkList * list);
 	int GetLength(DoubleLinkList * list);
