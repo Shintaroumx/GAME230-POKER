@@ -249,21 +249,21 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,
 	if (p->prev == NULL && p->next != NULL) {
 		list->head = p->next;
 		p->next->prev = NULL;
-		AddFirst(list2, p->data);
 		p->data.isKept = false;
+		AddFirst(list2, p->data);
 		delete p;
 	}
 	else if (p->prev == NULL && p->next == NULL) {
 		list->head = NULL;
-		AddFirst(list2, p->data);
 		p->data.isKept = false;
+		AddFirst(list2, p->data);
 		delete p;
 	}
 	else if (p->next != NULL) {
 		p->prev->next = p->next;
 		p->next->prev = p->prev;
-		AddFirst(list2, p->data);
 		p->data.isKept = false;
+		AddFirst(list2, p->data);
 		delete p;
 	}
 	else if (p->next == NULL) {
