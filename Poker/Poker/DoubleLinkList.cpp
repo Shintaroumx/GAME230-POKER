@@ -225,7 +225,7 @@ void DoubleLinkList::CopyList(DoubleLinkList* list1, DoubleLinkList* list2) {
 }
 
 
-void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,int index)
+void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2, int index)
 {
 	int count = index;
 	if (index == 0)
@@ -246,7 +246,7 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,
 		--count;
 	}
 
-	if (p->prev==NULL&& p->next != NULL) {
+	if (p->prev == NULL && p->next != NULL) {
 		list->head = p->next;
 		p->next->prev = NULL;
 		AddFirst(list2, p->data);
@@ -254,19 +254,19 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,
 		delete p;
 	}
 	else if (p->prev == NULL && p->next == NULL) {
-		 list->head = NULL;
-		 AddFirst(list2, p->data);
-		 p->data.isKept = false;
-		 delete p;
-	 }
-	else if (p->next!=NULL) {
+		list->head = NULL;
+		AddFirst(list2, p->data);
+		p->data.isKept = false;
+		delete p;
+	}
+	else if (p->next != NULL) {
 		p->prev->next = p->next;
 		p->next->prev = p->prev;
 		AddFirst(list2, p->data);
 		p->data.isKept = false;
 		delete p;
 	}
-	else if (p->next==NULL) {
+	else if (p->next == NULL) {
 		p->prev->next = NULL;
 		AddFirst(list2, p->data);
 		p->data.isKept = false;
@@ -275,10 +275,12 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,
 
 
 	Node* n = list->head;
-	if (n->next == NULL)n->data.isKept = true;
-	while (n->next != NULL) {
-		n->data.isKept = true;
-		n = n->next;
+	if (list->head != NULL) {
+		if (n->next == NULL)n->data.isKept = true;
+		while (n->next != NULL) {
+			n->data.isKept = true;
+			n = n->next;
+		}
 	}
 }
 
