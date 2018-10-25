@@ -99,6 +99,7 @@ void DoubleLinkList::ShowHand(DoubleLinkList* list) {
 	SortList(list);
 	Node* n = list->head;
 	int count = 1;
+	cout << endl;
 	cout << "Your hand contains:" << endl;
 	while (n != NULL)
 	{
