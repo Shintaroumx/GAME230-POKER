@@ -193,18 +193,22 @@ void DoubleLinkList::DrawFromList(DoubleLinkList* list1, DoubleLinkList* list2, 
 		cout << "Error! Code:DrawFromList" << endl;
 		return;
 	}
-	while (count>0) {
-		Node* n = list1->head;
-		if (n->next != NULL) {
-			list1->head = n->next;
-			n->next->prev = NULL;
+	else {
+		while (count > 0) {
+			Node* n = list1->head;
+			if (n != NULL) {
+				if (n->next != NULL) {
+					list1->head = n->next;
+					n->next->prev = NULL;
+				}
+				else {
+					list1->head = NULL;
+				}
+				AddFirst(list2, n->data);
+				delete n;
+				count--;
+			}
 		}
-		else {
-			list1->head = NULL;
-		}
-		AddFirst(list2, n->data);
-		delete n; 
-		count--;
 	}
 }
 
