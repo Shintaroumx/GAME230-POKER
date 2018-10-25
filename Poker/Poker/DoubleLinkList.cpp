@@ -193,22 +193,19 @@ void DoubleLinkList::DrawFromList(DoubleLinkList* list1, DoubleLinkList* list2, 
 		cout << "Error! Code:DrawFromList" << endl;
 		return;
 	}
-	else {
-		while (count > 0) {
-			Node* n = list1->head;
-			if (n != NULL) {
-				if (n->next != NULL) {
-					list1->head = n->next;
-					n->next->prev = NULL;
-				}
-				else {
-					list1->head = NULL;
-				}
-				AddFirst(list2, n->data);
-				delete n;
-				count--;
-			}
+	while (count > 0&& list1->head != NULL) {
+		Node* n = list1->head;
+		if (n->next != NULL) {
+			list1->head = n->next;
+			n->next->prev = NULL;
 		}
+		else {
+			list1->head = NULL;
+		}
+	AddFirst(list2, n->data);
+	delete n;
+	count--;
+
 	}
 }
 
@@ -241,41 +238,46 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,
 	Node* p = list->head;
 	while (count - 1 > 0)
 	{
-		if (p->next != NULL) {
-			p = p->next;
+		if (p != NULL) {
+			if (p->next != NULL) {
+				p = p->next;
+			}
+			else {
+				p->next = NULL;
+			}
+			--count;
 		}
-		else {
-			p->next = NULL;
-		}
-		--count;
 	}
 
-	if (p->prev == NULL && p->next != NULL) {
-		list->head = p->next;
-		p->next->prev = NULL;
-		p->data.isKept = false;
-		AddFirst(list2, p->data);
-		delete p;
+	if (p != NULL) {
+		if (p->prev == NULL && p->next != NULL) {
+			list->head = p->next;
+			p->next->prev = NULL;
+			p->data.isKept = false;
+			AddFirst(list2, p->data);
+			delete p;
+		}
+		else if (p->prev == NULL && p->next == NULL) {
+			list->head = NULL;
+			p->data.isKept = false;
+			AddFirst(list2, p->data);
+			delete p;
+		}
+		else if (p->next != NULL) {
+			p->prev->next = p->next;
+			p->next->prev = p->prev;
+			p->data.isKept = false;
+			AddFirst(list2, p->data);
+			delete p;
+		}
+		else if (p->next == NULL) {
+			p->prev->next = NULL;
+			AddFirst(list2, p->data);
+			p->data.isKept = false;
+			delete p;
+		}
 	}
-	else if (p->prev == NULL && p->next == NULL) {
-		list->head = NULL;
-		p->data.isKept = false;
-		AddFirst(list2, p->data);
-		delete p;
-	}
-	else if (p->next != NULL) {
-		p->prev->next = p->next;
-		p->next->prev = p->prev;
-		p->data.isKept = false;
-		AddFirst(list2, p->data);
-		delete p;
-	}
-	else if (p->next == NULL) {
-		p->prev->next = NULL;
-		AddFirst(list2, p->data);
-		p->data.isKept = false;
-		delete p;
-	}
+
 
 
 	Node* n = list->head;
