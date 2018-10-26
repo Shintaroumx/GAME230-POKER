@@ -4,6 +4,19 @@
 #include<iostream>
 #include<stdio.h>
 #include<string>
+
+#define _CRTDBG_MAP_ALLOC
+#define _CRTDBG_MAP_ALLOC_NEW
+#include <cstdlib>
+#include <crtdbg.h>
+#ifdef _DEBUG
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define new DBG_NEW
+#endif
+#endif
+
+
 using namespace std;
 //struct DoubleLinkList { Node* head; };
 
@@ -38,7 +51,6 @@ void DoubleLinkList::AddFirst(DoubleLinkList * list, Cards data) {
 		n->next->prev = n;
 		n->prev = NULL;
 	}
-
 }
 
 
@@ -294,8 +306,8 @@ void DoubleLinkList::DeleteFromList(DoubleLinkList* list, DoubleLinkList* list2,
 
 void DoubleLinkList::SortList(DoubleLinkList* list)
 {
-	Node* p = new Node;
-	Node* q = new Node;
+	Node* p = NULL;
+	Node* q =NULL;
 	if (list->head == NULL) {
 		cout << "Error! Code:SortList" << endl;
 		return;
@@ -414,7 +426,7 @@ int DoubleLinkList::JudgeCards(DoubleLinkList* hand) {
 
 
 	
-	if ((handCards[0] == handCards[1] && handCards[2] == handCards[3]) || (handCards[1] == handCards[2] && handCards[3] == handCards[4])) {
+	if ((handCards[0] == handCards[1] && handCards[2] == handCards[3]) || (handCards[1] == handCards[2] && handCards[3] == handCards[4])|| (handCards[0] == handCards[1] && handCards[3] == handCards[4])) {
 		return 2;//Two pair
 	}
 
